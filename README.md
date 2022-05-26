@@ -2,6 +2,7 @@
 # szrtools
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/sarazong/SZRtools/workflows/R-CMD-check/badge.svg)](https://github.com/sarazong/SZRtools/actions)
 <!-- badges: end -->
 
 The goal of szrtools is to ...
