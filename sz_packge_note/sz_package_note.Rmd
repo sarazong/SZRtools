@@ -34,7 +34,8 @@ the following files inside the project folder:
       - Description in the format of `#' @description <fxn description>`
       - Parameter(s) in the format of `#' @param <name> <description>`
       - Output in the format of `#' @return <fxn outupt>`
-      - Example of how funciton is called in the format of `#' @example(s) <example>`
+      - Example of how function is called in the format of `#' @example(s) <example>`
+      (Note: example will need to pass check if it's added to documentation)
       - Don't forget to `#' @export`
   - `devtools::document()` to create the nicely formatted function documentations
   - To add the ***magrittr*** pipe, use `usethis::use_pipe()`

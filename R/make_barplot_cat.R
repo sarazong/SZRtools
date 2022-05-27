@@ -9,31 +9,37 @@
 #'
 #' @return none
 #' @examples
-#' make_barplot_one(diamonds, "cut", "Cut of The Diamonds")
+#' make_barplot_one(ggplot2::diamonds, "cut", "Cut of The Diamonds")
 #' @export
 
 make_barplot_one <- function(data, cat_var, xlab) {
   num_cat <- data %>%
     dplyr::count(!!as.symbol(cat_var)) %>%
     nrow()
-  if (num_cat > 4 && num_cat <= 8) {
-    font_size = 3
-  } else {
-    font_size = 3.88 # Default font size for geom_text()
-  }
 
-  ggplot(data, aes(get(cat_var), fill = get(cat_var))) +
-    geom_bar(aes(y = ..count..)) +
-    geom_text(
-      aes(label = paste0(..count.., " (", scales::percent(..prop.., accuracy = 0.1), ")"),
-          group = 1),
-      stat = "count",
-      size = font_size,
-      vjust = -0.5) +
-    coord_cartesian(clip = "off") +
-    theme_classic() +
-    theme(legend.position = "none") +
-    labs(x = xlab)
+  if (num_cat > 10) {
+    stop("\U0001F611 Too many categories, try horizontal barplot!")
+  } else {
+    font_size <- switch(as.character(num_cat),
+                        "2" = 4.3, "3" = 4.0, "4" = 3.7, "5" = 3.4,
+                        "6" = 3.1, "7" = 2.8, "8" = 2.5, "9" = 2.1, "10" = 2)
+
+    ggplot2::ggplot(data, ggplot2::aes(get(cat_var), fill = get(cat_var))) +
+      ggplot2::geom_bar(ggplot2::aes(y = ..count..)) +
+      ggplot2::geom_text(
+        ggplot2::aes(
+          label = paste0(..count.., " (", scales::percent(..prop.., accuracy = 0.1), ")"),
+          group = 1
+          ),
+        stat = "count",
+        size = font_size,
+        vjust = -0.5
+        ) +
+      ggplot2::coord_cartesian(clip = "off") +
+      ggplot2::theme_classic() +
+      ggplot2::theme(legend.position = "none") +
+      ggplot2::labs(x = xlab)
+  }
 }
 
 
@@ -50,35 +56,36 @@ make_barplot_one <- function(data, cat_var, xlab) {
 #' @param xlab a string that labels the x-axis
 #'
 #' @return none
-#' @examples
-#' make_barplot_two()
 #' @export
 
 make_barplot_two <- function(data, cat_var, grp_var, xlab) {
-  num_cat <- data %>%
-    dplyr::count(!!as.symbol(grp_var)) %>%
+  total <- data %>%
+    dplyr::count(!!as.symbol(cat_var), !!as.symbol(grp_var)) %>%
     nrow()
-  if (num_cat > 3 && num_cat <= 5) {
-    font_size = 2
-  } else {
-    font_size = 3
-  }
 
-  ggplot(data, aes(x = get(cat_var), fill = get(cat_var))) +
-    geom_bar(aes(y = ..count..), position = "dodge") +
-    geom_text(
-      aes(label = paste0(..count.., " (",
-                         scales::percent(..prop.., accuracy = 0.1), ")"),
-          group = 1),
-      size = font_size,
-      stat = "count",
-      vjust = -0.5
-    ) +
-    # Expand the y limits by 10% to display bar labels properly
-    scale_y_continuous(expand = expansion(mult = c(0, 0.1))) +
-    theme_classic() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-    facet_grid(~ get(grp_var)) +
-    scale_fill_discrete(name = cat_var) +
-    labs(x = xlab)
+  if (total > 10) {
+    stop("\U0001F611 Too many categories, need to further customize the barplot!")
+  } else {
+    font_size <- switch(as.character(total),
+                      "4" = 3.5, "6" = 3, "8" = 2.5, "9" = 2.1, "10" = 2)
+
+    ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var), fill = get(cat_var))) +
+      ggplot2::geom_bar(ggplot2::aes(y = ..count..), position = "dodge") +
+      ggplot2::geom_text(
+        ggplot2::aes(
+          label = paste0(..count.., " (", scales::percent(..prop.., accuracy = 0.1), ")"),
+          group = 1
+          ),
+        size = font_size,
+        stat = "count",
+        vjust = -0.5
+      ) +
+      # Expand the y limits by 10% to display bar labels properly
+      ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.1))) +
+      ggplot2::theme_classic() +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)) +
+      ggplot2::facet_grid(~ get(grp_var)) +
+      ggplot2::scale_fill_discrete(name = cat_var) +
+      ggplot2::labs(x = xlab)
+  }
 }

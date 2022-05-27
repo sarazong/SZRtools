@@ -9,7 +9,8 @@ The goal of szrtools is to ...
 
 ## Installation
 
-You can install the szrtools from [CRAN](https://CRAN.R-project.org) with:
+You can clone the **SZRtools** from [GitHub](https://github.com/sarazong/SZRtools),
+and install with 
 
 ``` r
 install.packages("szrtools")

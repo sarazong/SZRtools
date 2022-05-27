@@ -24,6 +24,3 @@ Create a barplot for a categorical variable grouped by another
 categorical variable, with percent and count labels. Good for variable that have
 two to three categories while grouping variable has up to five categories.
 }
-\examples{
-make_barplot_two()
-}
