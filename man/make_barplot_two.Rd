@@ -2,8 +2,7 @@
 % Please edit documentation in R/make_barplot_cat.R
 \name{make_barplot_two}
 \alias{make_barplot_two}
-\title{Create a barplot for a categorical variable grouped by another categorical
-variable.}
+\title{Create barplot for categorical variable by categorical variable}
 \usage{
 make_barplot_two(data, cat_var, grp_var, xlab)
 }
@@ -21,6 +20,6 @@ none
 }
 \description{
 Create a barplot for a categorical variable grouped by another
-categorical variable, with percent and count labels. Good for variable that have
-two to three categories while grouping variable has up to five categories.
+categorical variable, with percent and count labels. Good for plotting ten or
+less total categories.
 }

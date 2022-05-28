@@ -1,4 +1,4 @@
-#' @title Barplot for categorical variable.
+#' @title Barplot for categorical variable
 #' @description Create a barplot for a categorical variable with percent and count
 #' labels. Good for variable that has ten or less categories. Label size is adjusted
 #' based on the number of categories.
@@ -44,11 +44,10 @@ make_barplot_one <- function(data, cat_var, xlab) {
 
 
 
-#' @title Create a barplot for a categorical variable grouped by another categorical
-#' variable.
+#' @title Create barplot for categorical variable by categorical variable
 #' @description Create a barplot for a categorical variable grouped by another
-#' categorical variable, with percent and count labels. Good for variable that have
-#' two to three categories while grouping variable has up to five categories.
+#' categorical variable, with percent and count labels. Good for plotting ten or
+#' less total categories.
 #'
 #' @param data dataset that contains the categorical variables
 #' @param cat_var name of a categorical variable to be plotted as a string
@@ -67,7 +66,7 @@ make_barplot_two <- function(data, cat_var, grp_var, xlab) {
     stop("\U0001F611 Too many categories, need to further customize the barplot!")
   } else {
     font_size <- switch(as.character(total),
-                      "4" = 3.5, "6" = 3, "8" = 2.5, "9" = 2.1, "10" = 2)
+                        "4" = 3.5, "6" = 3, "8" = 2.5, "9" = 2.1, "10" = 2)
 
     ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var), fill = get(cat_var))) +
       ggplot2::geom_bar(ggplot2::aes(y = ..count..), position = "dodge") +

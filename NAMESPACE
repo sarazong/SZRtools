@@ -3,4 +3,5 @@
 export("%>%")
 export(make_barplot_one)
 export(make_barplot_two)
+export(make_boxplot)
 importFrom(magrittr,"%>%")
