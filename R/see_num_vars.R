@@ -1,9 +1,32 @@
+#' @title Histogram for numeric variable
+#' @description Create a histogram to display the distribution of a numeric variable.
+#'
+#' @param data dataset that contains the variables
+#' @param num_var name of the numeric variable as a string
+#' @param plot_title title for the plot as a string
+#'
+#' @return none
+#' @examples
+#' make_histogram(ggplot2::diamonds, "price", "Diamond Price Distribution")
+#' @export
+
+make_histogram <- function(data, num_var, plot_title) {
+
+  ggplot2::ggplot(data, ggplot2::aes(x = get(num_var))) +
+    ggplot2::geom_histogram(ggplot2::aes(y = ..density..),
+                            color = "black") +
+    ggplot2::geom_density(fill = "red", alpha = 0.3) +
+    ggplot2::theme_classic() +
+    ggplot2::labs(xlab = num_var, title = plot_title)
+}
+
+
 #' @title Boxplot for numeric by categorical variables
 #' @description Create a boxplot to display the distribution of a numeric variable
 #' grouped by a categorical variable. Good for categorical variable that has ten
 #' or less categories. When the minimum observations for a category is < 200, each
-#' observation will be plotted and outliers will be hidden, vice versa for observations
-#' >= 200. Median for each category is labeled in the box.
+#' observation will be plotted and outliers will be hidden, vice versa for
+#' observations >= 200. Median for each category is labeled in the box.
 #'
 #' @param data dataset that contains the variables
 #' @param num_var name of the numeric variable as a string
