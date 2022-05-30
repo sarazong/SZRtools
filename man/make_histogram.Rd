@@ -2,16 +2,16 @@
 % Please edit documentation in R/see_num_vars.R
 \name{make_histogram}
 \alias{make_histogram}
-\title{Histogram for numeric variable}
+\title{Histogram for Numeric Variable}
 \usage{
-make_histogram(data, num_var, plot_title)
+make_histogram(data, num_var, bins = 30)
 }
 \arguments{
 \item{data}{dataset that contains the variables}
 
 \item{num_var}{name of the numeric variable as a string}
 
-\item{plot_title}{title for the plot as a string}
+\item{bins}{number of bins, default to 30}
 }
 \value{
 none
@@ -20,5 +20,5 @@ none
 Create a histogram to display the distribution of a numeric variable.
 }
 \examples{
-make_histogram(ggplot2::diamonds, "price", "Diamond Price Distribution")
+make_histogram(ggplot2::diamonds, "price")
 }

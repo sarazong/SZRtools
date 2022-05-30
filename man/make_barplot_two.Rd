@@ -2,7 +2,7 @@
 % Please edit documentation in R/see_cat_vars.R
 \name{make_barplot_two}
 \alias{make_barplot_two}
-\title{Create barplot for categorical variable by categorical variable}
+\title{Create Barplot for Categorical Variable by Categorical Variable}
 \usage{
 make_barplot_two(data, cat_var, grp_var, xlab)
 }
