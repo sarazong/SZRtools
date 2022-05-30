@@ -1,4 +1,4 @@
-#' @title Barplot for categorical variable
+#' @title Barplot for Categorical Variable
 #' @description Create a barplot for a categorical variable with percent and count
 #' labels. Good for variable that has ten or less categories. Label size is adjusted
 #' based on the number of categories.
@@ -43,8 +43,7 @@ make_barplot_one <- function(data, cat_var, xlab) {
 }
 
 
-
-#' @title Create barplot for categorical variable by categorical variable
+#' @title Create Barplot for Categorical Variable by Categorical Variable
 #' @description Create a barplot for a categorical variable grouped by another
 #' categorical variable, with percent and count labels. Good for plotting ten or
 #' less total categories.
