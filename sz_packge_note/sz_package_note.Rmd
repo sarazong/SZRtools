@@ -6,7 +6,8 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+                      error = FALSE, results = "asis")
 ```
 # Developing an R package:
 1. Navigate to the desired project location with `setwd()` or use the `Create a project` 
@@ -45,3 +46,13 @@ the following files inside the project folder:
   - either function creates a `.github` folder, a `workflows` folder with a 
   `R-CMD-check.yaml` file inside, and a `R-CMD-check` badge will be added to the
   `README.md`
+
+### Testing
+```{r}
+library(tidyverse)
+library(szrtools)
+print_ttest(t.test(mpg ~ am, data = mtcars))
+t.test(mpg ~ am, data = mtcars)
+
+```
+

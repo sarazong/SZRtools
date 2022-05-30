@@ -7,11 +7,11 @@
 print_chisq(test)
 }
 \arguments{
-\item{test}{list of result from a chi-squared test}
+\item{test}{list of the result from a chi-squared test}
 }
 \value{
 none
 }
 \description{
-Print the result of a chi-squared test in a R markdown.
+Tidy the printout of a chi-squared test in a R markdown.
 }
