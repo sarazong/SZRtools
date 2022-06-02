@@ -3,6 +3,8 @@ title: "SZ_Package_Note"
 author: "Sara(Yuhua) Zong"
 date: "`r Sys.time()`"
 output: html_document
+editor_options:
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}

@@ -37,6 +37,6 @@ print_ttest <- function(test) {
   } else {
     cat(" p-value = ", round(test$p.value, 3), " \n")
   }
-  cat(" ", names(test$estimate[1]), ":", round(test$estimate[1], 2), " \n",
+  cat(paste0(" ", names(test$estimate[1])), ":", round(test$estimate[1], 2), " \n",
       names(test$estimate[2]), ":", round(test$estimate[2], 2), " \n")
 }
