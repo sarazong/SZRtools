@@ -28,7 +28,7 @@ make_histogram <- function(data, num_var, bins = 30) {
 #' @title Boxplot for Numeric by Categorical Variables
 #' @description Create a boxplot to display the distribution of a numeric variable
 #' grouped by a categorical variable. Good for categorical variable that has ten
-#' or less categories. When the minimum observations for a category is < 200, each
+#' or less categories. When the maximum observations for a category is < 200, each
 #' observation will be plotted and outliers will be hidden, vice versa for
 #' observations >= 200. Median for each category is labeled in the box.
 #'
@@ -40,16 +40,16 @@ make_histogram <- function(data, num_var, bins = 30) {
 #'
 #' @return none
 #' @examples
-#' make_boxplot(ggplot2::diamonds, "price", "cut", "Price of Diamonds by Cuts")
+#' make_boxplot1(ggplot2::diamonds, "price", "cut", "Price of Diamonds by Cuts")
 #' @export
 
-make_boxplot <- function(data, num_var, cat_var, plot_title, vjust = 1.5) {
+make_boxplot1 <- function(data, num_var, cat_var, plot_title, vjust = 1.5) {
   num_cat <- data %>%
     dplyr::count(!!as.symbol(cat_var)) %>%
     nrow()
 
   if (num_cat > 10) {
-    stop("\U0001F611 Too many categories, need a customize boxplot!")
+    stop("\U0001F611 Too many categories, need a customized boxplot!")
   } else {
     font_size <- switch(as.character(num_cat),
                         "2" = 4.3, "3" = 4.0, "4" = 3.7, "5" = 3.4,
@@ -66,8 +66,7 @@ make_boxplot <- function(data, num_var, cat_var, plot_title, vjust = 1.5) {
                                             y = get(num_var),
                                             color = get(cat_var)))
     if (obs < 200) {
-      p <- p +
-        ggplot2::geom_boxplot(outlier.shape = NA) +
+      p <- p + ggplot2::geom_boxplot(outlier.shape = NA) +
         ggplot2::geom_jitter(alpha = 0.3)
     } else {
       p <- p + ggplot2::geom_boxplot()
@@ -86,75 +85,86 @@ make_boxplot <- function(data, num_var, cat_var, plot_title, vjust = 1.5) {
 #' @title Boxplot for Numeric by Two Categorical Variables
 #' @description Create a boxplot to compare the distribution of a numeric variable
 #' grouped by a categorical variable among the different levels of another categorical
-#' variable. Good for categorical variables that has ten
-#' or less categories. When the minimum observations for a category is < 200, each
-#' observation will be plotted and outliers will be hidden, vice versa for
-#' observations >= 200. Median for each category is labeled in the box.
+#' variable. Good for categorical variables that has ten or less categories. When
+#' the maximum observations for a category is < 200, each observation will be plotted
+#' and outliers will be hidden, vice versa for observations >= 200.
 #'
 #' @param data dataset that contains the variables
 #' @param num_var name of the numeric variable as a string
 #' @param cat_var name of the categorical variable as a string
 #' @param grp_var name of the categorical variable as a string
-#' @param plot_title title for the plot as a string
+#' @param label_fmt boolean to indicate whether plot labels should be formatted
 #'
 #' @return none
 #' @examples
-#' make_boxplot2(ggplot2::diamonds, "price", "cut", "color", "Price of Diamonds For by Cuts and Color")
+#' make_boxplot2(ggplot2::diamonds, "price", "cut", "color")
 #' @export
 
-make_boxplot2 <- function(data, num_var, cat_var, grp_var, plot_title) {
+make_boxplot2 <- function(data, num_var, cat_var, grp_var, label_fmt = TRUE) {
   num_cat1 <- data %>%
     dplyr::count(!!as.symbol(cat_var)) %>%
     nrow()
-  num_cat2 <- data %>%
-    dplyr::count(!!as.symbol(grp_var)) %>%
-    nrow()
-  total <- num_cat1 * num_cat2
 
-  per_row <- switch(as.character(num_cat1),
-                    "2" = 6, "3" = 5, "4" = 4, "5" = 3, "6" = 2, "7" = 2)
-  num_rows <- ceiling(num_cat2 / per_row)
-
-  obs <- data %>%
-    dplyr::count(!!as.symbol(cat_var), !!as.symbol(grp_var)) %>%
-    dplyr::summarize(max = max(n)) %>%
-    dplyr::pull()
-
-  legend <- stringr::str_to_title(stringr::str_replace(cat_var, "[:punct:]", " "))
-  ylab <- stringr::str_to_title(stringr::str_replace(num_var, "[:punct:]", " "))
-  xlab <- stringr::str_to_title(stringr::str_replace(grp_var, "[:punct:]", " "))
-
-  p <- ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var),
-                                          y = get(num_var),
-                                          color = get(cat_var)))
-
-  if (total <= 16) {
-    if (obs < 200) {
-      p <- p + ggplot2::geom_boxplot(outlier.shape = NA) +
-        ggplot2::geom_jitter(alpha = 0.3) +
-        ggplot2::facet_grid(~ get(grp_var))
-    } else {
-      p <- p + ggplot2::geom_boxplot() +
-        ggplot2::facet_grid(~ get(grp_var))
-    }
+  if (num_cat1 > 7) {
+    stop("\U0001F611 Too many categories, need a customized boxplot!")
   } else {
-    if (obs < 200) {
-      p <- p + ggplot2::geom_boxplot(outlier.shape = NA) +
-        ggplot2::geom_jitter(alpha = 0.3) +
-        ggplot2::facet_wrap(~ get(grp_var), nrow = num_rows)
+    num_cat2 <- data %>%
+      dplyr::count(!!as.symbol(grp_var)) %>%
+      nrow()
+    total <- num_cat1 * num_cat2
+
+    per_row <- switch(as.character(num_cat1),
+                      "2" = 6, "3" = 5, "4" = 4, "5" = 3, "6" = 2, "7" = 2)
+    num_rows <- ceiling(num_cat2 / per_row)
+
+    obs <- data %>%
+      dplyr::count(!!as.symbol(cat_var), !!as.symbol(grp_var)) %>%
+      dplyr::summarize(max = max(n)) %>%
+      dplyr::pull()
+
+    if (label_fmt) {
+      legend <- stringr::str_to_title(stringr::str_replace(cat_var, "[:punct:]", " "))
+      ylab <- stringr::str_to_title(stringr::str_replace(num_var, "[:punct:]", " "))
+      xlab <- stringr::str_to_title(stringr::str_replace(grp_var, "[:punct:]", " "))
+      plot_title <- paste0(ylab, " by ", legend, " and ", xlab)
     } else {
-      p <- p + ggplot2::geom_boxplot() +
-        ggplot2::facet_wrap(~ get(grp_var), nrow = num_rows)
+      legend <- cat_var
+      ylab <- num_var
+      xlab <- grp_var
+      plot_title <- paste0(ylab, " by ", legend, " and ", xlab)
     }
+
+    p <- ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var),
+                                            y = get(num_var),
+                                            color = get(cat_var)))
+
+    if (total <= 16) {
+      if (obs < 200) {
+        p <- p + ggplot2::geom_boxplot(outlier.shape = NA) +
+          ggplot2::geom_jitter(alpha = 0.3) +
+          ggplot2::facet_grid(~ get(grp_var))
+      } else {
+        p <- p + ggplot2::geom_boxplot() +
+          ggplot2::facet_grid(~ get(grp_var))
+      }
+    } else {
+      if (obs < 200) {
+        p <- p + ggplot2::geom_boxplot(outlier.shape = NA) +
+          ggplot2::geom_jitter(alpha = 0.3) +
+          ggplot2::facet_wrap(~ get(grp_var), nrow = num_rows)
+      } else {
+        p <- p + ggplot2::geom_boxplot() +
+          ggplot2::facet_wrap(~ get(grp_var), nrow = num_rows)
+      }
+    }
+
+    p + ggplot2::theme_classic() +
+      ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)) +
+      ggplot2::labs(x = xlab, y = ylab, title = plot_title, color = legend)
+      # ggplot2::guides(color = ggplot2::guide_legend(title = legend))
+      # ggplot2::annotate("segment", x = -Inf, xend = Inf, y = -Inf, yend = -Inf, size = 1) +
+      # ggplot2::annotate("segment", x=-Inf, xend=-Inf, y=-Inf, yend=Inf, size = 1)
   }
-
-  p + ggplot2::theme_classic() +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)) +
-    ggplot2::labs(x = xlab, y = ylab, title = plot_title) +
-    # Note: Legend label is not working as expected, need to fix this
-    # ggplot2::scale_fill_discrete(name = legend)
-    ggplot2::guides(fill = ggplot2::guide_legend(title = legend))
-
 }
 
 

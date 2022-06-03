@@ -4,7 +4,7 @@
 \alias{make_boxplot2}
 \title{Boxplot for Numeric by Two Categorical Variables}
 \usage{
-make_boxplot2(data, num_var, cat_var, grp_var, plot_title)
+make_boxplot2(data, num_var, cat_var, grp_var, label_fmt = TRUE)
 }
 \arguments{
 \item{data}{dataset that contains the variables}
@@ -15,7 +15,7 @@ make_boxplot2(data, num_var, cat_var, grp_var, plot_title)
 
 \item{grp_var}{name of the categorical variable as a string}
 
-\item{plot_title}{title for the plot as a string}
+\item{label_fmt}{boolean to indicate whether plot labels should be formatted}
 }
 \value{
 none
@@ -23,11 +23,10 @@ none
 \description{
 Create a boxplot to compare the distribution of a numeric variable
 grouped by a categorical variable among the different levels of another categorical
-variable. Good for categorical variables that has ten
-or less categories. When the minimum observations for a category is < 200, each
-observation will be plotted and outliers will be hidden, vice versa for
-observations >= 200. Median for each category is labeled in the box.
+variable. Good for categorical variables that has ten or less categories. When
+the maximum observations for a category is < 200, each observation will be plotted
+and outliers will be hidden, vice versa for observations >= 200.
 }
 \examples{
-make_boxplot2(ggplot2::diamonds, "price", "cut", "color", "Price of Diamonds For by Cuts and Color")
+make_boxplot2(ggplot2::diamonds, "price", "cut", "color")
 }

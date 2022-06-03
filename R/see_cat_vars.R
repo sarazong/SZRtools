@@ -9,10 +9,10 @@
 #'
 #' @return none
 #' @examples
-#' make_barplot_one(ggplot2::diamonds, "cut", "Cut of The Diamonds")
+#' make_barplot1(ggplot2::diamonds, "cut", "Cut of The Diamonds")
 #' @export
 
-make_barplot_one <- function(data, cat_var, xlab) {
+make_barplot1 <- function(data, cat_var, xlab) {
   num_cat <- data %>%
     dplyr::count(!!as.symbol(cat_var)) %>%
     nrow()
@@ -56,7 +56,7 @@ make_barplot_one <- function(data, cat_var, xlab) {
 #' @return none
 #' @export
 
-make_barplot_two <- function(data, cat_var, grp_var, xlab) {
+make_barplot2 <- function(data, cat_var, grp_var, xlab) {
   total <- data %>%
     dplyr::count(!!as.symbol(cat_var), !!as.symbol(grp_var)) %>%
     nrow()
