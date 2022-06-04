@@ -13,9 +13,7 @@
 #' @export
 
 make_barplot1 <- function(data, cat_var, xlab) {
-  num_cat <- data %>%
-    dplyr::count(!!as.symbol(cat_var)) %>%
-    nrow()
+  num_cat <- szrtools::count_cats(data, c(cat_var))
 
   if (num_cat > 10) {
     stop("\U0001F611 Too many categories, try horizontal barplot!")
@@ -57,9 +55,7 @@ make_barplot1 <- function(data, cat_var, xlab) {
 #' @export
 
 make_barplot2 <- function(data, cat_var, grp_var, xlab) {
-  total <- data %>%
-    dplyr::count(!!as.symbol(cat_var), !!as.symbol(grp_var)) %>%
-    nrow()
+  total <- szrtools::count_cats(data, c(cat_var,  grp_var))
 
   if (total > 10) {
     stop("\U0001F611 Too many categories, need to further customize the barplot!")
