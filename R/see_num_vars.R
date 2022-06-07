@@ -25,7 +25,7 @@ make_histogram <- function(data, num_var, bins = 30) {
 }
 
 
-#' @title Boxplot for Numeric by Categorical Variables
+#' @title Boxplot for Numeric Grouped by Categorical
 #' @description Create a boxplot to display the distribution of a numeric variable
 #' grouped by a categorical variable. Good for categorical variable that has ten
 #' or less categories. When the maximum observations for a category is < 200, each
@@ -77,7 +77,7 @@ make_boxplot1 <- function(data, num_var, cat_var, plot_title, vjust = 1.5) {
 }
 
 
-#' @title Boxplot for Numeric by Two Categorical Variables
+#' @title Boxplot for Numeric Grouped by Two Categoricals
 #' @description Create a boxplot to compare the distribution of a numeric variable
 #' grouped by a categorical variable among the different levels of another categorical
 #' variable. Good for categorical variables that has ten or less categories. When
@@ -166,23 +166,29 @@ make_boxplot2 <- function(data, num_var, cat_var, grp_var, label_fmt = TRUE) {
 #'
 #' @return none
 #' @examples
-#' make_scatter_plot(ggplot2::diamonds, "price", "carat")
+#' make_scatter_plot(ggplot2::diamonds, "carat", "price")
 #' @export
 
 make_scatter_plot <- function(data, num_var1, num_var2, label_fmt = TRUE) {
+  obs <- nrow(data)
+  alpha <- dplyr::case_when(obs >= 10000 ~ 0.1, obs >= 5000 ~ 0.25, obs >= 2500 ~ 0.3,
+                            obs >= 1000 ~ 0.4, obs >= 200 ~ 0.5, TRUE ~ 0.7)
 
-    if (label_fmt) {
-      labels <- list(num_var1, num_var2) %>%
-        lapply(stringr::str_replace, "[:punct:]", " ") %>%
-        lapply(stringr::str_to_title)
-      plot_title <- paste0("Scatter Plot for ", labels[[1]], " and ", labels[[2]])
-    } else {
-      labels <- list(num_var1, num_var2)
-      plot_title <- paste0("Scatter Plot for ", labels[[1]], " and ", labels[[2]])
-    }
+  if (label_fmt) {
+    labels <- list(num_var1, num_var2) %>%
+      lapply(stringr::str_replace, "[:punct:]", " ") %>%
+      lapply(stringr::str_to_title)
+    plot_title <- paste0("Scatter Plot for ", labels[[1]], " and ", labels[[2]])
+  } else {
+    labels <- list(num_var1, num_var2)
+    plot_title <- paste0("Scatter Plot for ", labels[[1]], " and ", labels[[2]])
+  }
 
-    ggplot2::ggplot(data, ggplot2::aes(x = get(num_var1), y = get(num_var2))) +
-      ggplot2::geom_point(alpha = 0.1) +
-      ggplot2::theme_bw() +
-      ggplot2::labs(x = labels[[1]], y = labels[[2]], title = plot_title)
+  ggplot2::ggplot(data, ggplot2::aes(x = get(num_var1), y = get(num_var2))) +
+    ggplot2::geom_point(alpha = alpha) +
+    ggpubr::stat_cor(p.accuracy = 0.001, r.accuracy = 0.01,
+                     label.x.npc = 0.7, label.y.npc = 0) +
+    ggplot2::geom_smooth(method = "lm", se = FALSE, color = "blue") +
+    ggplot2::theme_bw() +
+    ggplot2::labs(x = labels[[1]], y = labels[[2]], title = plot_title)
 }

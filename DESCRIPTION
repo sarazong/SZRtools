@@ -14,6 +14,7 @@ Imports:
     datasets,
     dplyr,
     ggplot2,
+    ggpubr,
     magrittr,
     readr,
     scales,

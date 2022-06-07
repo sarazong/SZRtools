@@ -2,7 +2,7 @@
 % Please edit documentation in R/see_num_vars.R
 \name{make_boxplot2}
 \alias{make_boxplot2}
-\title{Boxplot for Numeric by Two Categorical Variables}
+\title{Boxplot for Numeric Grouped by Two Categoricals}
 \usage{
 make_boxplot2(data, num_var, cat_var, grp_var, label_fmt = TRUE)
 }

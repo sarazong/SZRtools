@@ -23,5 +23,5 @@ Create a scatter plot to examine relationship between two numeric
 variables.
 }
 \examples{
-make_scatter_plot(ggplot2::diamonds, "price", "carat")
+make_scatter_plot(ggplot2::diamonds, "carat", "price")
 }
