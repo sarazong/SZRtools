@@ -1,4 +1,4 @@
-#' @title Histogram for Numeric Variable
+#' @title Histogram for Numeric Var
 #' @description Create a histogram to display the distribution of a numeric variable.
 #'
 #' @param data dataset that contains the variables
@@ -155,21 +155,23 @@ make_boxplot2 <- function(data, num_var, cat_var, grp_var, label_fmt = TRUE) {
 }
 
 
-#' @title Scatter Plot for Numeric Variables
+#' @title Scatter Plot for Numeric Vars
 #' @description Create a scatter plot to examine relationship between two numeric
 #' variables.
 #'
 #' @param data dataset that contains the variables
 #' @param num_var1 name of the numeric variable as a string
 #' @param num_var2 name of the numeric variable as a string
-#' @param label_fmt boolean to indicate whether plot labels should be formatted
+#' @param label_fmt Boolean to indicate whether plot labels should be formatted
+#' @param trend string represents smoothing method to use
 #'
 #' @return none
 #' @examples
-#' make_scatter_plot(ggplot2::diamonds, "carat", "price")
+#' make_scatter_plot1(ggplot2::diamonds, "carat", "price")
 #' @export
 
-make_scatter_plot <- function(data, num_var1, num_var2, label_fmt = TRUE) {
+make_scatter_plot1 <- function(data, num_var1, num_var2,
+                              label_fmt = TRUE, trend = "lm") {
   obs <- nrow(data)
   alpha <- dplyr::case_when(obs >= 10000 ~ 0.1, obs >= 5000 ~ 0.25, obs >= 2500 ~ 0.3,
                             obs >= 1000 ~ 0.4, obs >= 200 ~ 0.5, TRUE ~ 0.7)
@@ -188,7 +190,51 @@ make_scatter_plot <- function(data, num_var1, num_var2, label_fmt = TRUE) {
     ggplot2::geom_point(alpha = alpha) +
     ggpubr::stat_cor(p.accuracy = 0.001, r.accuracy = 0.01,
                      label.x.npc = 0.7, label.y.npc = 0) +
-    ggplot2::geom_smooth(method = "lm", se = FALSE, color = "blue") +
+    ggplot2::geom_smooth(method = trend, se = FALSE, color = "blue") +
     ggplot2::theme_bw() +
     ggplot2::labs(x = labels[[1]], y = labels[[2]], title = plot_title)
+}
+
+
+#' @title Scatter Plot for Numeric Grouped by Categorical
+#' @description Create a scatter plot to examine relationship between two numeric
+#' variables within the categories of a categorical variable.
+#'
+#' @param data dataset that contains the variables
+#' @param num_var1 name of the numeric variable as a string
+#' @param num_var2 name of the numeric variable as a string
+#' @param grp_var name of the categorical variable as a string
+#' @param label_fmt Boolean to indicate whether plot labels should be formatted
+#' @param trend string represents smoothing method to use
+#'
+#' @return none
+#' @examples
+#' make_scatter_plot2(ggplot2::diamonds, "carat", "price", "cut)
+#' @export
+
+make_scatter_plot2 <- function(data, num_var1, num_var2, grp_var,
+                               label_fmt = TRUE, trend = "lm") {
+  # SHOULD USE "facet_grid/wrap" WHEN THERE ARE A LARGE # OF OBS ---------------
+  obs <- nrow(data)
+  alpha <- dplyr::case_when(obs >= 10000 ~ 0.25, obs >= 5000 ~ 0.3, obs >= 2500 ~ 0.4,
+                            obs >= 1000 ~ 0.5, obs >= 200 ~ 0.6, TRUE ~ 0.7)
+
+  if (label_fmt) {
+    labels <- list(num_var1, num_var2, grp_var) %>%
+      lapply(stringr::str_replace, "[:punct:]", " ") %>%
+      lapply(stringr::str_to_title)
+    plot_title <- paste0("Scatter Plot for ", labels[[1]], " and ", labels[[2]])
+  } else {
+    labels <- list(num_var1, num_var2, grp_var)
+    plot_title <- paste0("Scatter Plot for ", labels[[1]], " and ", labels[[2]])
+  }
+
+  ggplot2::ggplot(data, ggplot2::aes(x = get(num_var1),
+                                     y = get(num_var2),
+                                     color = get(grp_var))) +
+    ggplot2::geom_point(alpha = alpha) +
+    ggplot2::geom_smooth(method = trend, se = FALSE) +
+    ggplot2::theme_bw() +
+    ggplot2::labs(x = labels[[1]], y = labels[[2]],
+                  title = plot_title, color = labels[[3]])
 }

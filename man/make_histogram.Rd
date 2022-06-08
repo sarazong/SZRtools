@@ -2,7 +2,7 @@
 % Please edit documentation in R/see_num_vars.R
 \name{make_histogram}
 \alias{make_histogram}
-\title{Histogram for Numeric Variable}
+\title{Histogram for Numeric Var}
 \usage{
 make_histogram(data, num_var, bins = 30)
 }
