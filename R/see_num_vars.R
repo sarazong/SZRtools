@@ -110,15 +110,8 @@ make_boxplot2 <- function(data, num_var, cat_var, grp_var, label_fmt = TRUE) {
 
     obs <- szrtools::count_obs(data, c(cat_var, grp_var), max)
 
-    if (label_fmt) {
-      labels <- list(num_var, cat_var, grp_var) %>%
-        lapply(stringr::str_replace, "[:punct:]", " ") %>%
-        lapply(stringr::str_to_title)
-      plot_title <- paste0(labels[[1]], " by ", labels[[2]], " and ", labels[[3]])
-    } else {
-      labels <- list(num_var, cat_var, grp_var)
-      plot_title <- paste0(labels[[1]], " by ", labels[[2]], " and ", labels[[3]])
-    }
+    labs <- label_plot(plot_type = "Boxplot", num_var, cat_var, grp_var,
+                       label_fmt = label_fmt)
 
     p <- ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var),
                                             y = get(num_var),
@@ -146,8 +139,8 @@ make_boxplot2 <- function(data, num_var, cat_var, grp_var, label_fmt = TRUE) {
 
     p + ggplot2::theme_classic() +
       ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)) +
-      ggplot2::labs(x = labels[[3]], y = labels[[1]],
-                    title = plot_title, color = labels[[2]])
+      ggplot2::labs(x = labs[[1]][[3]], y = labs[[1]][[1]],
+                    title = labs[[2]][[1]], color = labs[[1]][[2]])
       # ggplot2::guides(color = ggplot2::guide_legend(title = legend))
       # ggplot2::annotate("segment", x = -Inf, xend = Inf, y = -Inf, yend = -Inf, size = 1)
   }
@@ -205,22 +198,35 @@ make_scatter_plot1 <- function(data, num_var1, num_var2,
 #' make_scatter_plot2(ggplot2::diamonds, "carat", "price", "cut")
 #' @export
 
-make_scatter_plot2 <- function(data, num_var1, num_var2, grp_var,
-                               trend = "lm", label_fmt = TRUE) {
-  # SHOULD USE "facet_grid/wrap" WHEN THERE ARE A LARGE # OF OBS ---------------
+make_scatter_plot2 <- function(data, num_var1, num_var2, grp_var, trend = "lm",
+                               split = FALSE, label_fmt = TRUE) {
+  # WIP...WIP...WIP... ---------------------------------------------------------
   obs <- nrow(data)
   alpha <- dplyr::case_when(obs >= 10000 ~ 0.25, obs >= 5000 ~ 0.3, obs >= 2500 ~ 0.4,
                             obs >= 1000 ~ 0.5, obs >= 200 ~ 0.6, TRUE ~ 0.7)
 
   labs <- label_plot(plot_type = "Scatter Plot", num_var1, num_var2, grp_var,
-                       label_fmt = label_fmt)
+                     label_fmt = label_fmt)
 
-  ggplot2::ggplot(data, ggplot2::aes(x = get(num_var1),
+  p <- ggplot2::ggplot(data, ggplot2::aes(x = get(num_var1),
                                      y = get(num_var2),
                                      color = get(grp_var))) +
-    ggplot2::geom_point(alpha = alpha) +
-    ggplot2::geom_smooth(method = trend, se = FALSE) +
-    ggplot2::theme_bw() +
+    ggplot2::geom_point(alpha = alpha)
+
+  if (split) {
+    p <-  p + ggpubr::stat_cor(aes(label = ..r.label..), r.accuracy = 0.01,
+                               color = "black", size = 2) +
+      geom_smooth(method = "lm", se = FALSE, color = "black") +
+      facet_wrap(~ cut, 3, scales = "free_y") +
+      guides(color = guide_legend(override.aes = list(alpha = 1)))
+  } else {
+    p <- p + ggplot2::geom_smooth(method = trend, se = FALSE)
+  }
+
+  p + ggplot2::theme_bw() +
     ggplot2::labs(x = labs[[1]][[1]], y = labs[[1]][[2]],
                   title = labs[[2]][[1]], color = labs[[1]][[3]])
 }
+
+
+

@@ -63,6 +63,7 @@ label_plot <- function(plot_type, ..., label_fmt = TRUE) {
     vars <- list(...) %>%
       lapply(stringr::str_replace, "[:punct:]", " ") %>%
       lapply(stringr::str_to_title)
+    plot_type <- stringr::str_to_title(plot_type)
   } else {
     vars <- list(...)
     plot_type <- stringr::str_to_lower(plot_type)
@@ -72,8 +73,13 @@ label_plot <- function(plot_type, ..., label_fmt = TRUE) {
   if (num_vars == 2) {
     plot_title <- paste0(plot_type, " for ", vars[[1]], " and ", vars[[2]])
   } else {
-    plot_title <- paste0(plot_type, " for ", vars[[1]], " and ", vars[[2]],
-                         " by ", vars[[3]])
+    if (stringr::str_detect(plot_type, "[sS]catter")) {
+      plot_title <- paste0(plot_type, " for ", vars[[1]], " and ", vars[[2]],
+                           " by ", vars[[3]])
+    } else {
+      plot_title <- paste0(plot_type, " for ", vars[[1]], " by ", vars[[2]],
+                           " and ", vars[[3]])
+    }
   }
 
   return(list(vars, plot_title))
