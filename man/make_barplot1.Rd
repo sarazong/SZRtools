@@ -22,5 +22,5 @@ labels. Good for variable that has ten or less categories. Label size is adjuste
 based on the number of categories.
 }
 \examples{
-make_barplot1(ggplot2::diamonds, "cut", "Cut of The Diamonds")
+make_barplot1(ggplot2::diamonds, "cut", "Distribution of Cut")
 }

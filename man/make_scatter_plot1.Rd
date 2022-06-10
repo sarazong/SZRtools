@@ -4,7 +4,7 @@
 \alias{make_scatter_plot1}
 \title{Scatter Plot for Numeric Vars}
 \usage{
-make_scatter_plot1(data, num_var1, num_var2, label_fmt = TRUE, trend = "lm")
+make_scatter_plot1(data, num_var1, num_var2, trend = "lm", label_fmt = TRUE)
 }
 \arguments{
 \item{data}{dataset that contains the variables}
@@ -13,9 +13,9 @@ make_scatter_plot1(data, num_var1, num_var2, label_fmt = TRUE, trend = "lm")
 
 \item{num_var2}{name of the numeric variable as a string}
 
-\item{label_fmt}{Boolean to indicate whether plot labels should be formatted}
-
 \item{trend}{string represents smoothing method to use}
+
+\item{label_fmt}{Boolean to indicate whether plot labels should be formatted}
 }
 \value{
 none

@@ -9,7 +9,7 @@
 #'
 #' @return none
 #' @examples
-#' make_barplot1(ggplot2::diamonds, "cut", "Cut of The Diamonds")
+#' make_barplot1(ggplot2::diamonds, "cut", "Distribution of Cut")
 #' @export
 
 make_barplot1 <- function(data, cat_var, xlab) {

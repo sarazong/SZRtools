@@ -1,4 +1,4 @@
-#' @title Counting Categories
+#' @title Counting Categories in a Var
 #' @description Count the number of categories in a categorical variable, or count
 #' the categories of multiple categorical variables.
 #'
@@ -41,4 +41,40 @@ count_obs <- function(data, cat_vars, fxn = c(min, max)) {
     dplyr::pull()
 
   return(num_obs)
+}
+
+
+#' @title Labeling the Plot
+#' @description Label the axses of a plot with formatted/unformatted variable names
+#' and label the plot with a formatted/unformatted plot title.
+#'
+#' @param plot_type the type of plot used to visualize data in a string
+#' @param ... variable names in strings
+#' @param label_fmt Boolean to indicate whether plot labels should be formatted
+#'
+#' @return labels for a plot
+#' @examples
+#'label_plot("Scatter Plot", "price", "carat", "cut", label_fmt = TRUE)
+#'
+#' @export
+
+label_plot <- function(plot_type, ..., label_fmt = TRUE) {
+  if (label_fmt ==  TRUE) {
+    vars <- list(...) %>%
+      lapply(stringr::str_replace, "[:punct:]", " ") %>%
+      lapply(stringr::str_to_title)
+  } else {
+    vars <- list(...)
+    plot_type <- stringr::str_to_lower(plot_type)
+  }
+
+  num_vars <- length(list(...))
+  if (num_vars == 2) {
+    plot_title <- paste0(plot_type, " for ", vars[[1]], " and ", vars[[2]])
+  } else {
+    plot_title <- paste0(plot_type, " for ", vars[[1]], " and ", vars[[2]],
+                         " by ", vars[[3]])
+  }
+
+  return(list(vars, plot_title))
 }

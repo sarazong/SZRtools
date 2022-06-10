@@ -9,8 +9,8 @@ make_scatter_plot2(
   num_var1,
   num_var2,
   grp_var,
-  label_fmt = TRUE,
-  trend = "lm"
+  trend = "lm",
+  label_fmt = TRUE
 )
 }
 \arguments{
@@ -22,9 +22,9 @@ make_scatter_plot2(
 
 \item{grp_var}{name of the categorical variable as a string}
 
-\item{label_fmt}{Boolean to indicate whether plot labels should be formatted}
-
 \item{trend}{string represents smoothing method to use}
+
+\item{label_fmt}{Boolean to indicate whether plot labels should be formatted}
 }
 \value{
 none
@@ -32,4 +32,7 @@ none
 \description{
 Create a scatter plot to examine relationship between two numeric
 variables within the categories of a categorical variable.
+}
+\examples{
+make_scatter_plot2(ggplot2::diamonds, "carat", "price", "cut")
 }

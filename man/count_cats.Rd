@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{count_cats}
 \alias{count_cats}
-\title{Counting Categories}
+\title{Counting Categories in a Var}
 \usage{
 count_cats(data, cat_vars)
 }
