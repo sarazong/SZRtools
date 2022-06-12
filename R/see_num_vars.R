@@ -191,6 +191,8 @@ make_scatter_plot1 <- function(data, num_var1, num_var2,
 #' @param num_var2 name of the numeric variable as a string
 #' @param grp_var name of the categorical variable as a string
 #' @param trend string represents smoothing method to use
+#' @param split Boolean to indicate whether categories of the grouping variable
+#' should be split into individual plot
 #' @param label_fmt Boolean to indicate whether plot labels should be formatted
 #'
 #' @return none
@@ -200,7 +202,7 @@ make_scatter_plot1 <- function(data, num_var1, num_var2,
 
 make_scatter_plot2 <- function(data, num_var1, num_var2, grp_var, trend = "lm",
                                split = FALSE, label_fmt = TRUE) {
-  # WIP...WIP...WIP... ---------------------------------------------------------
+
   obs <- nrow(data)
   alpha <- dplyr::case_when(obs >= 10000 ~ 0.25, obs >= 5000 ~ 0.3, obs >= 2500 ~ 0.4,
                             obs >= 1000 ~ 0.5, obs >= 200 ~ 0.6, TRUE ~ 0.7)
@@ -216,9 +218,9 @@ make_scatter_plot2 <- function(data, num_var1, num_var2, grp_var, trend = "lm",
   if (split) {
     p <-  p + ggpubr::stat_cor(aes(label = ..r.label..), r.accuracy = 0.01,
                                color = "black", size = 2) +
-      geom_smooth(method = "lm", se = FALSE, color = "black") +
-      facet_wrap(~ cut, 3, scales = "free_y") +
-      guides(color = guide_legend(override.aes = list(alpha = 1)))
+      ggplot2::geom_smooth(method = trend, se = FALSE, color = "black") +
+      ggplot2::facet_wrap(~ get(grp_var), ncol = 2, scales = "free_y") +
+      ggplot2::guides(color = ggplot2::guide_legend(override.aes = list(alpha = 1)))
   } else {
     p <- p + ggplot2::geom_smooth(method = trend, se = FALSE)
   }

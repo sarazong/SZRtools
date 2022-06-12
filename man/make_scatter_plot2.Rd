@@ -10,6 +10,7 @@ make_scatter_plot2(
   num_var2,
   grp_var,
   trend = "lm",
+  split = FALSE,
   label_fmt = TRUE
 )
 }
