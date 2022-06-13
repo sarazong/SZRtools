@@ -16,6 +16,7 @@ Imports:
     ggplot2,
     ggpubr,
     magrittr,
+    pROC,
     readr,
     scales,
     stringr

@@ -25,6 +25,9 @@ make_scatter_plot2(
 
 \item{trend}{string represents smoothing method to use}
 
+\item{split}{Boolean to indicate whether categories of the grouping variable
+should be split into individual plot}
+
 \item{label_fmt}{Boolean to indicate whether plot labels should be formatted}
 }
 \value{
