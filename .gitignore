@@ -6,4 +6,4 @@
 .Rproj
 *.html
 *.docx
-lr_roc_note.Rmd
+sz_package_note/lr_roc_note.Rmd
