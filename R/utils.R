@@ -59,6 +59,7 @@ count_obs <- function(data, cat_vars, fxn = c(min, max)) {
 #' @export
 
 label_plot <- function(plot_type, ..., label_fmt = TRUE) {
+  # Convert variable names and plot type to title case when label_fmt is TRUE
   if (label_fmt ==  TRUE) {
     vars <- list(...) %>%
       lapply(stringr::str_replace, "[:punct:]", " ") %>%

@@ -4,14 +4,14 @@
 \alias{make_barplot1}
 \title{Barplot for Categorical Var}
 \usage{
-make_barplot1(data, cat_var, xlab)
+make_barplot1(data, cat_var, label_fmt = TRUE)
 }
 \arguments{
 \item{data}{dataset that contains the categorical variable}
 
 \item{cat_var}{name of the categorical variable as a string}
 
-\item{xlab}{x-axis label as a string}
+\item{label_fmt}{boolean to indicate whether plot labels should be formatted}
 }
 \value{
 none
@@ -22,5 +22,5 @@ labels. Good for variable that has ten or less categories. Label size is adjuste
 based on the number of categories.
 }
 \examples{
-make_barplot1(ggplot2::diamonds, "cut", "Distribution of Cut")
+make_barplot1(ggplot2::diamonds, "cut")
 }

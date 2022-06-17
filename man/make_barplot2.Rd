@@ -4,7 +4,7 @@
 \alias{make_barplot2}
 \title{Barplot for Categorical by Categorical}
 \usage{
-make_barplot2(data, cat_var, grp_var, xlab)
+make_barplot2(data, cat_var, grp_var)
 }
 \arguments{
 \item{data}{dataset that contains the categorical variables}
@@ -12,8 +12,6 @@ make_barplot2(data, cat_var, grp_var, xlab)
 \item{cat_var}{name of a categorical variable to be plotted as a string}
 
 \item{grp_var}{name of a grouping categorical variable as a string}
-
-\item{xlab}{a string that labels the x-axis}
 }
 \value{
 none

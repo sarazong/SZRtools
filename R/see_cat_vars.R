@@ -5,15 +5,23 @@
 #'
 #' @param data dataset that contains the categorical variable
 #' @param cat_var name of the categorical variable as a string
-#' @param xlab x-axis label as a string
+#' @param label_fmt boolean to indicate whether plot labels should be formatted
 #'
 #' @return none
 #' @examples
-#' make_barplot1(ggplot2::diamonds, "cut", "Distribution of Cut")
+#' make_barplot1(ggplot2::diamonds, "cut")
 #' @export
 
-make_barplot1 <- function(data, cat_var, xlab) {
+make_barplot1 <- function(data, cat_var, label_fmt = TRUE) {
   num_cat <- szrtools::count_cats(data, c(cat_var))
+
+  if (label_fmt) {
+    xlab <- stringr::str_to_title(stringr::str_replace(cat_var, "[:punct:]", " "))
+    plot_title <- paste0("Distribution of ", xlab)
+  } else {
+    xlab <- cat_var
+    plot_title <- paste0("Distribution of ", stringr::str_to_title(cat_var))
+  }
 
   if (num_cat > 10) {
     stop("\U0001F611 Too many categories, try horizontal barplot!")
@@ -36,7 +44,7 @@ make_barplot1 <- function(data, cat_var, xlab) {
       ggplot2::coord_cartesian(clip = "off") +
       ggplot2::theme_classic() +
       ggplot2::theme(legend.position = "none") +
-      ggplot2::labs(x = xlab)
+      ggplot2::labs(x = xlab, title = plot_title)
   }
 }
 
@@ -49,19 +57,25 @@ make_barplot1 <- function(data, cat_var, xlab) {
 #' @param data dataset that contains the categorical variables
 #' @param cat_var name of a categorical variable to be plotted as a string
 #' @param grp_var name of a grouping categorical variable as a string
-#' @param xlab a string that labels the x-axis
 #'
 #' @return none
 #' @export
 
-make_barplot2 <- function(data, cat_var, grp_var, xlab) {
+make_barplot2 <- function(data, cat_var, grp_var) {
+  # Count the total number of categories between cat_var and grp_var
   total <- szrtools::count_cats(data, c(cat_var,  grp_var))
 
-  if (total > 10) {
+  if (total > 12) {
     stop("\U0001F611 Too many categories, need to further customize the barplot!")
   } else {
     font_size <- switch(as.character(total),
-                        "4" = 3.5, "6" = 3, "8" = 2.5, "9" = 2.1, "10" = 2)
+                        "4" = 3.5, "6" = 3, "8" = 2.5, "9" = 2.1, "10" = 2, "12" = 2)
+
+
+    vars <- list(cat_var, grp_var) %>%
+      lapply(stringr::str_replace, "[:punct:]", " ") %>%
+      lapply(stringr::str_to_title)
+    plot_title <- paste0("Distribution of ", vars[[1]], " by ", vars[[2]], " Categories")
 
     ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var), fill = get(cat_var))) +
       ggplot2::geom_bar(ggplot2::aes(y = ..count..), position = "dodge") +
@@ -80,6 +94,6 @@ make_barplot2 <- function(data, cat_var, grp_var, xlab) {
       ggplot2::theme(axis.text.x = ggplot2::element_text(angle = 45, hjust = 1)) +
       ggplot2::facet_grid(~ get(grp_var)) +
       ggplot2::scale_fill_discrete(name = cat_var) +
-      ggplot2::labs(x = xlab)
+      ggplot2::labs(x = "", title = plot_title)
   }
 }

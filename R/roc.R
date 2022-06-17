@@ -1,5 +1,6 @@
 #' @title ROC for Model Performance
 #' @description Plot ROC curves of logistic regression models to assess model performance.
+#' Curve is labeled with AUC and 95% CI.
 #'
 #' @param ... ROC objects
 #' @param plot_title title for the plot as a string
@@ -17,7 +18,7 @@ plot_roc <- function(..., plot_title) {
                              ", ", round(rocs[[i]][["ci"]][3], 2), ")")
   }
 
-  # Use linetype to differentiate curve aes = "linetype"
+  # Use linetype to differentiate curves "aes = 'linetype'"
   pROC::ggroc(rocs, legacy.axes = TRUE, size = 0.8) +
     ggplot2::labs(title = plot_title) +
     ggplot2::theme_classic() +
