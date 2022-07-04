@@ -15,6 +15,6 @@ plot_roc(..., plot_title)
 none
 }
 \description{
-Plot ROC curves of logistic regression models to assess model performance.
+Plot ROC curves for logistic regression models to assess model performance.
 Curve is labeled with AUC and 95\% CI.
 }

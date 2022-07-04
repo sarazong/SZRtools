@@ -79,6 +79,8 @@ make_hbarplot <- function(data, cat_var, label_fmt = TRUE) {
   data <- data %>%
     dplyr::mutate(!!as.symbol(cat_var) := factor(!!as.symbol(cat_var), levels = levels))
 
+  font_size <- if_else(length(levels) > 20, 3, 5)
+
   ggplot2::ggplot(data, ggplot2::aes(get(cat_var), fill = get(cat_var))) +
     ggplot2::geom_bar(ggplot2::aes(y = ..count..)) +
     ggplot2::geom_text(
@@ -87,9 +89,10 @@ make_hbarplot <- function(data, cat_var, label_fmt = TRUE) {
         group = 1
       ),
       stat = "count",
-      hjust = -0.05
+      hjust = -0.05,
+      size = font_size
     ) +
-    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.2))) +
+    ggplot2::scale_y_continuous(expand = ggplot2::expansion(mult = c(0, 0.15))) +
     ggplot2::theme_classic() +
     ggplot2::theme(legend.position = "none") +
     ggplot2::labs(x = xlab, title = plot_title) +

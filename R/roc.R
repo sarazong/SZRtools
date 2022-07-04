@@ -1,5 +1,5 @@
 #' @title ROC for Model Performance
-#' @description Plot ROC curves of logistic regression models to assess model performance.
+#' @description Plot ROC curves for logistic regression models to assess model performance.
 #' Curve is labeled with AUC and 95% CI.
 #'
 #' @param ... ROC objects
@@ -9,7 +9,7 @@
 #' @export
 
 plot_roc <- function(..., plot_title) {
-  rocs <- list(roc1, roc2, roc3)
+  rocs <- list(...)
   # Name each ROC object with AUC and 95% CIs
   for (i in seq_along(rocs)) {
     names(rocs)[i] <- paste0("AUC of model ", i, ": ",
