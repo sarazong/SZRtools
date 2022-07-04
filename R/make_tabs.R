@@ -20,7 +20,7 @@ make_xtab <- function(data, cat_var1, cat_var2) {
       ) %>%
     gtsummary::modify_header(label ~ "**Variable**") %>%
     gtsummary::modify_spanning_header(
-      all_stat_cols() ~ paste0("**", stringr::str_to_title(cat_var1), "**")
+      gtsummary::all_stat_cols() ~ paste0("**", stringr::str_to_title(cat_var1), "**")
       ) %>%
     gtsummary::bold_labels() %>%
     gtsummary::add_overall(last = TRUE)
