@@ -32,17 +32,22 @@ make_xtab <- function(data, cat_var1, cat_var2) {
 #' @description Create a nicely formatted table for variables of interest.
 #'
 #' @param data dataset that contains the variables of interest
-#' @param  names of variables of interest as strings, with grouping variable being
-#' the first
+#' @param grp_var name of grouping variable for data summary calculation as a string
+#' @param all boolean to indicate whether select all variables from the dataset
+#' @param select list of variables names to be selected from the dataset in strings
+#' @param labs boolean to indicate whether customized labels are being used in the
+#' table
+#' @param fmt_labs list of customized labels either in strings or in formula format
 #'
 #' @return none
 #' @examples
+#' make_tab1(ggplot2::diamonds, "cut")
 #'
 #' @export
 
 make_tab1 <- function(data, grp_var,
                       all = TRUE, select = c(),
-                      labs = FALSE, fmt_labs = list()) {
+                      labs = FALSE, fmt_labs = c()) {
 
   if (!all) {
     if (length(select) == 0) stop("Please provide variables to be selected!")
@@ -53,28 +58,36 @@ make_tab1 <- function(data, grp_var,
   }
 
   if (!all) {
+    select <- c(grp_var, select)
     data <- data %>%
       dplyr::select(all_of(select))
     }
 
-  vars <- names(data)
-  ind <- which(vars == grp_var, arr.ind = TRUE)
+  # Get all variables names except for the grouping variable
+  vars <- names(data)[-which(names(data) == grp_var, arr.ind = TRUE)]
   pair <- vector("list", length(vars))
 
   if (labs) { # Use customized variable labels in the table
-    labels <- fmt_labs
+    if (typeof(fmt_labs[1]) == "character") {
+      labels <- fmt_labs
+      # When labels are strings, pair them with corresponding variables
+      for (i in seq_along(vars)) {
+        pair[[i]] <- as.formula(paste0(vars[i], " ~ ", paste0("'", labels[i], "'")))
+        }
+      } else {
+        pair <- fmt_labs
+      }
   } else { # Format variable names as labels
     labels <- stringr::str_to_title(stringr::str_replace(vars, "[:punct:]", " "))
-  }
-
-  for (i in seq_along(vars)) {
-    pair[[i]] <- as.formula(paste0(vars[i], " ~ ", paste0("'", labels[i], "'")))
+    for (i in seq_along(vars)) {
+      pair[[i]] <- as.formula(paste0(vars[i], " ~ ", paste0("'", labels[i], "'")))
+    }
   }
 
   data %>%
     gtsummary::tbl_summary(
       by = grp_var, # row variable
-      label = pair[-ind],
+      label = pair,
       missing_text = "Missing", # default is "Unknown"
     ) %>%
     gtsummary::modify_header(label ~ "**Variables**") %>%

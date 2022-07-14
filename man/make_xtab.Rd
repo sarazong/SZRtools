@@ -7,7 +7,7 @@
 make_xtab(data, cat_var1, cat_var2)
 }
 \arguments{
-\item{data}{dataset that contains the categorical variable}
+\item{data}{dataset that contains the categorical variables}
 
 \item{cat_var1}{name of the categorical variable as a string}
 
