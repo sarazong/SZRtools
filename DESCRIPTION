@@ -1,6 +1,6 @@
 Package: szrtools
 Title: Sara Zong's customized data analysis tools
-Version: 0.0.0.9020
+Version: 0.0.0.9025
 Authors@R: 
     person("Sara", "Zong", , "yhzong@umich.edu", role = c("aut", "cre"))
 Description: This simple R pakcage contains customized functions that are commonly used in data analysis. 
@@ -11,6 +11,7 @@ LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
 Imports: 
+    aws.s3,
     datasets,
     dplyr,
     ggplot2,
