@@ -6,4 +6,5 @@
 .Rproj
 *.html
 *.docx
-sz_package_note/lr_roc_note.Rmd
+lr_roc_note.Rmd
+styles.css
