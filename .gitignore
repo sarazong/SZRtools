@@ -4,7 +4,6 @@
 .httr-oauth
 .DS_Store
 .Rproj
-*.html
 *.docx
 lr_roc_note.Rmd
 styles.css
