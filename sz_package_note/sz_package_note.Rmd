@@ -23,57 +23,85 @@ knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
 # Writing an R package:
 ## Tools--R packages to create R packages
 1. **`devtools`** is a collection of R package developmental tools
-   - For example `create("project")` creates a project folder for your R package
+    - For example `create("project")` creates a project folder for your R package
 2. **`usethis`** creates things for package management
-   - For example `use_r("file_name")` creates an ***.R*** file
+    - For example `use_r("file_name")` creates an ***.R*** file
 3. **`roxygen`** generates documentations
 
-More on how to use these packages below.
+More on how to use these packages below... ...
 
 ## HOW to Create an R Package:
 1. Navigate to the desired project location with `setwd()` in RStudio
 2. Use `devtools::create("<project_name>")` to create a new R project. It will create 
 the following files inside the project folder:
-   - an ***R folder***
-   - ***DESCRIPTION***
-   - ***NAMESPACE***
-   - ***<project_name>.Rproj***
-     - If existing project doesn't have an ***.Rproj*** file, create one with `devtools::use_rstudio("<path/to/package>")`.
+    - an ***R folder***
+    - ***DESCRIPTION***
+    - ***NAMESPACE***
+    - ***<project_name>.Rproj***
+      - If existing project doesn't have an ***.Rproj*** file, create one with `devtools::use_rstudio("<path/to/package>")`.
      ***.Rproj*** file contains project option information
-   - ***.gitignore***
-   - ***.Rbuildignore***
+    - ***.gitignore***
+    - ***.Rbuildignore***
 3. Work on the ***DESCRIPTION*** file:
-   - Modify **Title** and **Description** accordingly (**Note:** values span multiple lines
-   in the ***DESCRIPTION*** file needs four spaces indent)
-   - Modify **Authors@R** with `person("first_name", "last_name", email = ..., role = c("aut", "cre"))`
-   - Use `devtools::use_package("package_name")` to add package dependency to **Import:** 
-   - Use `devtools::use_build_ignore("note")` to modify the ***.Rbuildignore*** file
-4. Add functions to ***.R*** files in the R folder:
-   - `use_this::use_r("file_name")` to creat a blank ***.R*** file in the R folder
-   - Add function documentation:
-     - Title in the format of `#' @title <fxn title>`
-     - Description in the format of `#' @description <fxn description>`
-     - Parameter(s) in the format of `#' @param <name> <description>`
-     - Output in the format of `#' @return <fxn outupt>`
-     - Example of how function is used in the format of `#' @example(s) <example>`
+    - Modify **Title** and **Description** accordingly (**Note:** values span multiple 
+  lines in the ***DESCRIPTION*** file needs four spaces indent)
+    - Modify **Authors@R** with `person("first_name", "last_name", email = ..., role = c("aut", "cre"))`
+    - Use `devtools::use_package("package_name")` to add package dependency to **Import:** 
+    - Use `devtools::use_build_ignore("note")` to modify the ***.Rbuildignore*** file
+4. Add functions to ***.R*** files in the ***R folder***:
+    - `use_this::use_r("file_name")` to creat a blank ***.R*** file in the R folder
+    - Tips and tricks for functions:
+      - Variable names should be nouns and function names should be verbs
+      - Use two spaces when indent your code
+      - Comments should explain the why, not the what
+      - Use `#------` to break up your code into easily readable chunks
+    - Add function documentation:
+      - Title in the format of `#' @title <fxn title>`
+      - Description in the format of `#' @description <fxn description>`
+      - Parameter(s) in the format of `#' @param <name> <description>`
+      - Output in the format of `#' @return <fxn outupt>`
+      - Example of how function is used in the format of `#' @example(s) <example>`
       (**Note:** example will need to pass check if it's added to documentation)
-     - Don't forget to `#' @export`
-     ![Example](/Users/sarazzzz/Desktop/R/rdev/szrtools/imgs/fun_doc_example.png)
-   - `devtools::document()` creates the nicely formatted function documentations
-   - To add the **`magrittr`** pipe, use `usethis::use_pipe()`
+      - Don't forget to `#' @export`
+      ![Example](/Users/sarazzzz/Desktop/R/rdev/szrtools/imgs/fun_doc_example.png)
+    - `devtools::document()` creates the nicely formatted function documentations
+    - To add the **`magrittr`** pipe, use `usethis::use_pipe()`
 5. Add files/directories to ***.Rbuildignore*** if they should not be distributed
-   - `usethis::use_build_ignore("<file/directory_name>")`
-6. 
+    - `usethis::use_build_ignore("<file/directory_name>")`
+6. Build package with `devtools::build()`
+7. Check package for errors, warnings, and notes with `devtools::check()`
+
+
 7. Use GitHub Actions to check codes add to the repo:
-   - `usethis::use_github_action_check_standard()` for standard check
-   - `usethis::use_github_action_check_release()` for quick check
-   - either function creates a `.github` folder, a `workflows` folder with a 
+    - `usethis::use_github_action_check_standard()` for standard check
+    - `usethis::use_github_action_check_release()` for quick check
+    - Either function creates a `.github` folder, a `workflows` folder with a 
   `R-CMD-check.yaml` file inside, and a `R-CMD-check` badge will be added to the
   `README.md`
 
-## Understand the Whys
+## Understand the WHYs
 1. What is the difference between `devtools` and `usethis`? [Hmmm](https://github.com/r-lib/devtools/issues/1985)
 2. Five states of a package:
-   - **source**: local development version of a package 
-   - **bundled**: package that's compressed to a single file, it's the product of 
-  `devtools::build()`. *".Rbuildignore"* files are not included in the bundle.
+    - **source:** local development version of a package 
+    - **bundled:** package that's compressed to a single file, it's created by calling 
+  `devtools::build()`. Files added to *".Rbuildignore"* are not included in the bundle.
+   Package bundle is generated for code distribution!?
+    - **binary:** similar to package bundle that it's compressed to a single file,
+   but its internal structure is rearranged from a source package. Binary package 
+   is generated for distribution that `install.packages()` download and install 
+   binary packages built by CRAN.
+    - **installed:** is a binary package decompressed into a package library
+    - **in memory:** load installed package to memory
+3. What is a library? A directory containing installed packages. Library varies based 
+on the version of R. When upgrade R, all packages need to be re-install not because 
+they disappear, but only that R cannot find them.
+4. What is the difference between `devtools::load_all()` and "Build & Reload"?
+    - `devtools::load_all()` sources all files in ***R/***
+5. What is the difference between `library()` and `require()`? When a package is 
+not found, `library()` throws an error but `require()` prints a message and returns
+`FALSE`.
+6. When a package is built, code in ***R/*** is executed and the results are saved. 
+They are made available to use when package is loaded with `library()` or `require()`.
+7. Specifying required packages in `DESCRIPTION` installed those packages when your 
+package is installed.
+8. 
