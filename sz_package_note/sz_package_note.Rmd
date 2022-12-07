@@ -70,7 +70,7 @@ the following files inside the project folder:
       ![Example](/Users/sarazzzz/Desktop/R/rdev/szrtools/imgs/fun_doc_example.png)
     - `devtools::document()` creates the nicely formatted function documentations, 
     which are in the Rd files, and they could be converted to HTML or [PDF](https://stackoverflow.com/questions/3779864/how-do-i-convert-rd-files-to-pdf-for-a-package-that-i-am-creating-in-r)
-    - use template .R file or template documentation, or documentation referencing 
+    - use template .R file or template documentation (`#'@template file_name`), or documentation referencing (`#'@inheritParams function_name`)
     for consistent function documentation
 5. To add the **`magrittr`** pipe, use `usethis::use_pipe()`
 6. Add files/directories to ***.Rbuildignore*** if they should not be distributed
@@ -85,15 +85,23 @@ the following files inside the project folder:
   `README.md`
 
 ## How to Consistently Document R Functions
-### Create a Template .R File ([Ref](https://stackoverflow.com/questions/35158708/how-to-set-default-template-for-new-r-files-in-rstudio))
+### Create a Template .R File 
+**Reference:** [stackoverflow post](https://stackoverflow.com/questions/35158708/how-to-set-default-template-for-new-r-files-in-rstudio)
+
 1. First create a ***template folder*** in the ***.config folder***
     - `cd ~/.config/rstudio`
     - `mkdir template`
-2. Then create a `default.R` file
+2. Then create a ***default.R*** file
     - `cd template`
     - `touch default.R`
-    - `open default.R` and add to the template.R file
+    - `open default.R` and add to the ***default.R*** file
+    
 ### Create a Template Doc File
+1. First create a ***man-roxygen folder*** in the project folder
+2. Add the folder to the ***.Rbuildignore*** 
+    - `usethis::use_build_ignore("man-roxygen")`
+3. Create template documentation .R file
+    - For example, "#'@param var_x blah blah blah" to var_x.R
 
 
 ## Understand the WHYs

@@ -2,7 +2,7 @@
 % Please edit documentation in R/see_cat_vars.R
 \name{make_barplot1}
 \alias{make_barplot1}
-\title{Barplot for Categorical Var}
+\title{Create barplots for categorical vars}
 \usage{
 make_barplot1(data, cat_var, label_fmt = TRUE)
 }

@@ -1360,7 +1360,7 @@ text-indent: 10px;
 width: 100%;
 border-radius: 5px;
 }
-h2, h3{
+h2{
 color: #082567;
 background-color: #FFFACD;
 font-family: 'Alegreya', serif;
@@ -1369,9 +1369,14 @@ padding: 5px;
 text-indent: 10px;
 border-radius: 5px;
 }
-h4{
-color: #082567;
-text-indent: 20px;
+h3{
+color: gold;
+background-color: #082567;
+font-family: 'Alegreya', serif;
+font-size: 28px;
+padding: 5px;
+text-indent: 10px;
+border-radius: 5px;
 }
 a{
 color: blue;
@@ -1662,8 +1667,10 @@ example will need to pass check if it’s added to documentation)</li>
 <li><code>devtools::document()</code> creates the nicely formatted
 function documentations, which are in the Rd files, and they could be
 converted to HTML or <a href="https://stackoverflow.com/questions/3779864/how-do-i-convert-rd-files-to-pdf-for-a-package-that-i-am-creating-in-r">PDF</a></li>
-<li>use template .R file or template documentation, or documentation
-referencing for consistent function documentation</li>
+<li>use template .R file or template documentation
+(<code>#&#39;@template file_name</code>), or documentation referencing
+(<code>#&#39;@inheritParams function_name</code>) for consistent function
+documentation</li>
 </ul></li>
 <li>To add the <strong><code>magrittr</code></strong> pipe, use
 <code>usethis::use_pipe()</code></li>
@@ -1691,9 +1698,11 @@ inside, and a <code>R-CMD-check</code> badge will be added to the
 <div id="how-to-consistently-document-r-functions" class="section level2" number="1.3">
 <h2><span class="header-section-number">1.3</span> How to Consistently
 Document R Functions</h2>
-<div id="create-a-template-.r-file-ref-here" class="section level3" number="1.3.1">
+<div id="create-a-template-.r-file" class="section level3" number="1.3.1">
 <h3><span class="header-section-number">1.3.1</span> Create a Template
-.R File (Ref <a href="https://docs.posit.co/ide/server-pro/1.3.399-1/r-sessions.html#default-document-templates">here</a>)</h3>
+.R File</h3>
+<p><strong>Reference:</strong> <a href="https://stackoverflow.com/questions/35158708/how-to-set-default-template-for-new-r-files-in-rstudio">stackoverflow
+post</a></p>
 <ol style="list-style-type: decimal">
 <li>First create a <strong><em>template folder</em></strong> in the
 <strong><em>.config folder</em></strong>
@@ -1701,12 +1710,29 @@ Document R Functions</h2>
 <li><code>cd ~/.config/rstudio</code></li>
 <li><code>mkdir template</code></li>
 </ul></li>
-<li>Then create a <code>default.R</code> file
+<li>Then create a <strong><em>default.R</em></strong> file
 <ul>
 <li><code>cd template</code></li>
 <li><code>touch default.R</code></li>
-<li><code>open default.R</code> and add to the template.R file ###
-Create a Template Doc File</li>
+<li><code>open default.R</code> and add to the
+<strong><em>default.R</em></strong> file</li>
+</ul></li>
+</ol>
+</div>
+<div id="create-a-template-doc-file" class="section level3" number="1.3.2">
+<h3><span class="header-section-number">1.3.2</span> Create a Template
+Doc File</h3>
+<ol style="list-style-type: decimal">
+<li>First create a <strong><em>man-roxygen folder</em></strong> in the
+project folder</li>
+<li>Add the folder to the <strong><em>.Rbuildignore</em></strong>
+<ul>
+<li><code>usethis::use_build_ignore(&quot;man-roxygen&quot;)</code></li>
+</ul></li>
+<li>Create template documentation .R file
+<ul>
+<li>For example, “#’<span class="citation">@param</span> var_x blah blah
+blah” to var_x.R</li>
 </ul></li>
 </ol>
 </div>
