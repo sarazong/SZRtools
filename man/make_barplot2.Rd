@@ -7,9 +7,9 @@
 make_barplot2(data, cat_var, grp_var)
 }
 \arguments{
-\item{data}{dataset that contains the categorical variables}
+\item{data}{dataset that contains the categorical variable}
 
-\item{cat_var}{name of a categorical variable to be plotted as a string}
+\item{cat_var}{name of the categorical variable to be plotted as a string}
 
 \item{grp_var}{name of a grouping categorical variable as a string}
 }

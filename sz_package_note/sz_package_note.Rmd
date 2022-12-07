@@ -17,9 +17,10 @@ editor_options:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE,
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE,
                       error = FALSE, results = "asis")
 ```
+
 # Writing an R package:
 ## Tools--R packages to create R packages
 1. **`devtools`** is a collection of R package developmental tools
@@ -42,11 +43,14 @@ the following files inside the project folder:
      ***.Rproj*** file contains project option information
     - ***.gitignore***
     - ***.Rbuildignore***
-3. Work on the ***DESCRIPTION*** file:
+3. Work on the ***DESCRIPTION*** file, reference for details [here](https://bookdown.dongzhuoer.com/hadley/r-pkgs/description.html):
     - Modify **Title** and **Description** accordingly (**Note:** values span multiple 
   lines in the ***DESCRIPTION*** file needs four spaces indent)
     - Modify **Authors@R** with `person("first_name", "last_name", email = ..., role = c("aut", "cre"))`
     - Use `devtools::use_package("package_name")` to add package dependency to **Import:** 
+    - Use `devtools::use_package("package_name", "Suggests")` to add package to **Suggests:**
+    - If any of your functions provides the option to use the suggested package, 
+    check if the package is installed with `requireNamespace("package_name", quietly=TRUE)` 
     - Use `devtools::use_build_ignore("note")` to modify the ***.Rbuildignore*** file
 4. Add functions to ***.R*** files in the ***R folder***:
     - `use_this::use_r("file_name")` to creat a blank ***.R*** file in the R folder
@@ -64,22 +68,38 @@ the following files inside the project folder:
       (**Note:** example will need to pass check if it's added to documentation)
       - Don't forget to `#' @export`
       ![Example](/Users/sarazzzz/Desktop/R/rdev/szrtools/imgs/fun_doc_example.png)
-    - `devtools::document()` creates the nicely formatted function documentations
-    - To add the **`magrittr`** pipe, use `usethis::use_pipe()`
-5. Add files/directories to ***.Rbuildignore*** if they should not be distributed
+    - `devtools::document()` creates the nicely formatted function documentations, 
+    which are in the Rd files, and they could be converted to HTML or [PDF](https://stackoverflow.com/questions/3779864/how-do-i-convert-rd-files-to-pdf-for-a-package-that-i-am-creating-in-r)
+    - use template .R file or template documentation, or documentation referencing 
+    for consistent function documentation
+5. To add the **`magrittr`** pipe, use `usethis::use_pipe()`
+6. Add files/directories to ***.Rbuildignore*** if they should not be distributed
     - `usethis::use_build_ignore("<file/directory_name>")`
-6. Build package with `devtools::build()`
-7. Check package for errors, warnings, and notes with `devtools::check()`
-
-
-7. Use GitHub Actions to check codes add to the repo:
+7. Build package with `devtools::build()`
+8. Check package for errors, warnings, and notes with `devtools::check()`
+9. Use GitHub Actions to check codes add to the repo:
     - `usethis::use_github_action_check_standard()` for standard check
     - `usethis::use_github_action_check_release()` for quick check
     - Either function creates a `.github` folder, a `workflows` folder with a 
   `R-CMD-check.yaml` file inside, and a `R-CMD-check` badge will be added to the
   `README.md`
 
+## How to Consistently Document R Functions
+### Create a Template .R File ([Ref](https://stackoverflow.com/questions/35158708/how-to-set-default-template-for-new-r-files-in-rstudio))
+1. First create a ***template folder*** in the ***.config folder***
+    - `cd ~/.config/rstudio`
+    - `mkdir template`
+2. Then create a `default.R` file
+    - `cd template`
+    - `touch default.R`
+    - `open default.R` and add to the template.R file
+### Create a Template Doc File
+
+
 ## Understand the WHYs
+**Reference:** first edition of [R Packages](https://bookdown.dongzhuoer.com/hadley/r-pkgs/index.html), 
+second edition is work in progress.
+
 1. What is the difference between `devtools` and `usethis`? [Hmmm](https://github.com/r-lib/devtools/issues/1985)
 2. Five states of a package:
     - **source:** local development version of a package 
@@ -102,6 +122,43 @@ not found, `library()` throws an error but `require()` prints a message and retu
 `FALSE`.
 6. When a package is built, code in ***R/*** is executed and the results are saved. 
 They are made available to use when package is loaded with `library()` or `require()`.
-7. Specifying required packages in `DESCRIPTION` installed those packages when your 
-package is installed.
-8. 
+7. `DESCRIPTION` lists the packages your package needs. Specify required packages 
+in `DESCRIPTION$Imports` and they will be installed when your package is installed.
+List suggested packages under `DESCRIPTION$Suggests`, those are the packages can be 
+used but not required (Not sure if I understand the difference since I would have `suggested_package::fxn` even for functions from the suggested packages in my codes, 
+right?! Okay, I think it means if you have an alternative execution to `suggested_package::fxn`, 
+you can let your package users know that they can use the `suggested_package::fxn` 
+with your fxns).
+**For examples:** 
+```{r eval=FALSE}
+# Here you are telling your package users that they need to install the suggested_pkg.
+# Why not put the package under Imports?? If the suggested package is only required 
+# by one less-frequently-used function among many of your other functions, maybe it's 
+# a good idea to let the users install the suggested package when they need it.
+# When developing package locally, you don't really need to use Suggests.
+fxn <- function(x, y) {
+  if (!requireNamespace("suggested_pkg", quietly = TRUE)) {
+    stop("Suggested_pkg needed for this function. Please install it.", call. = FALSE)
+  }
+}
+
+# Here you have an alternative execution, but user could also choose to use the 
+# suggested package
+fxn <- function(x, y) {
+  if (!requireNamespace("suggested_pkg", quietly = TRUE)) {
+    suggested_pkg::fxn()
+  } else {
+    fxn()
+  }
+}
+```
+
+8. Version of the required packages under **Imports:** can be specified like this:
+```{r eval=FALSE}
+Imports: 
+  pakcage_x (>= version_of_the_pacakge_you_are_using_for_development)
+```
+It's important to specify the version of required packages when you release your package
+since users might not have the required version installed.
+9. 
+10. R environment is changed sometimes with function calls, for examples, `library()`, `options()`, and `setwd()` 

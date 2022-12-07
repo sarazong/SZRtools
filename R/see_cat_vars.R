@@ -1,10 +1,9 @@
-#' @title Barplot for Categorical Var
+#' @title Create barplots for categorical vars
 #' @description Create a barplot for a categorical variable with percent and count
 #' labels. Good for variable that has ten or less categories. Label size is adjusted
 #' based on the number of categories.
 #'
-#' @param data dataset that contains the categorical variable
-#' @param cat_var name of the categorical variable as a string
+#' @template cat_var
 #' @param label_fmt boolean to indicate whether plot labels should be formatted
 #'
 #' @return none
@@ -53,8 +52,7 @@ make_barplot1 <- function(data, cat_var, label_fmt = TRUE) {
 #' @description Create a horizontal barplot for a categorical variable with percent
 #' and count labels. Good for variable that has greater than ten categories.
 #'
-#' @param data dataset that contains the categorical variable
-#' @param cat_var name of the categorical variable as a string
+#' @template cat_var
 #' @param label_fmt boolean to indicate whether plot labels should be formatted
 #'
 #' @return none
@@ -105,8 +103,7 @@ make_hbarplot <- function(data, cat_var, label_fmt = TRUE) {
 #' categorical variable, with percent and count labels. Good for plotting ten or
 #' less total categories.
 #'
-#' @param data dataset that contains the categorical variables
-#' @param cat_var name of a categorical variable to be plotted as a string
+#' @template cat_var
 #' @param grp_var name of a grouping categorical variable as a string
 #'
 #' @return none

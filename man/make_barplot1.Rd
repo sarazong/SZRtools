@@ -9,7 +9,7 @@ make_barplot1(data, cat_var, label_fmt = TRUE)
 \arguments{
 \item{data}{dataset that contains the categorical variable}
 
-\item{cat_var}{name of the categorical variable as a string}
+\item{cat_var}{name of the categorical variable to be plotted as a string}
 
 \item{label_fmt}{boolean to indicate whether plot labels should be formatted}
 }

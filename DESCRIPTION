@@ -1,5 +1,5 @@
 Package: szrtools
-Title: Sara Zong's customized data analysis tools
+Title: Sara Zong's Customized Data Analysis Tools
 Version: 0.0.0.9025
 Authors@R: 
     person("Sara", "Zong", , "yhzong@umich.edu", role = c("aut", "cre"))
