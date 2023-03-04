@@ -97,6 +97,8 @@ the following files inside the project folder:
     - `open default.R` and add to the ***default.R*** file
     
 ### Create a Template Doc File
+**Reference:** [technical guidelines from Mirai Solutions](https://mirai-solutions.ch/techguides/advanced-usage-and-consistent-documentation.html)
+
 1. First create a ***man-roxygen folder*** in the project folder
 2. Add the folder to the ***.Rbuildignore*** 
     - `usethis::use_build_ignore("man-roxygen")`

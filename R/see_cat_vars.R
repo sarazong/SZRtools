@@ -30,10 +30,10 @@ make_barplot1 <- function(data, cat_var, label_fmt = TRUE) {
                         "6" = 3.1, "7" = 2.8, "8" = 2.5, "9" = 2.1, "10" = 2)
 
     ggplot2::ggplot(data, ggplot2::aes(get(cat_var), fill = get(cat_var))) +
-      ggplot2::geom_bar(ggplot2::aes(y = ..count..)) +
+      ggplot2::geom_bar(ggplot2::aes(y = after_stat(count))) +
       ggplot2::geom_text(
         ggplot2::aes(
-          label = paste0(..count.., " (", scales::percent(..prop.., accuracy = 0.1), ")"),
+          label = paste0(after_stat(count), " (", scales::percent(after_stat(prop), accuracy = 0.1), ")"),
           group = 1
           ),
         stat = "count",
@@ -80,10 +80,10 @@ make_hbarplot <- function(data, cat_var, label_fmt = TRUE) {
   font_size <- dplyr::if_else(length(levels) > 20, 3, 5)
 
   ggplot2::ggplot(data, ggplot2::aes(get(cat_var), fill = get(cat_var))) +
-    ggplot2::geom_bar(ggplot2::aes(y = ..count..)) +
+    ggplot2::geom_bar(ggplot2::aes(y = after_stat(count))) +
     ggplot2::geom_text(
       ggplot2::aes(
-        label = paste0(..count.., " (", scales::percent(..prop.., accuracy = 0.1), ")"),
+        label = paste0(after_stat(count), " (", scales::percent(after_stat(prop), accuracy = 0.1), ")"),
         group = 1
       ),
       stat = "count",
@@ -126,10 +126,10 @@ make_barplot2 <- function(data, cat_var, grp_var) {
     plot_title <- paste0("Distribution of ", vars[[1]], " by ", vars[[2]], " Categories")
 
     ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var), fill = get(cat_var))) +
-      ggplot2::geom_bar(ggplot2::aes(y = ..count..), position = "dodge") +
+      ggplot2::geom_bar(ggplot2::aes(y = after_stat(count)), position = "dodge") +
       ggplot2::geom_text(
         ggplot2::aes(
-          label = paste0(..count.., " (", scales::percent(..prop.., accuracy = 0.1), ")"),
+          label = paste0(after_stat(count), " (", scales::percent(after_stat(prop), accuracy = 0.1), ")"),
           group = 1
           ),
         size = font_size,
