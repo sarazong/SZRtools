@@ -29,11 +29,11 @@ make_barplot1 <- function(data, cat_var, label_fmt = TRUE) {
                         "2" = 4.3, "3" = 4.0, "4" = 3.7, "5" = 3.4,
                         "6" = 3.1, "7" = 2.8, "8" = 2.5, "9" = 2.1, "10" = 2)
 
-    ggplot2::ggplot(data, ggplot2::aes(get(cat_var), fill = get(cat_var))) +
-      ggplot2::geom_bar(ggplot2::aes(y = after_stat(count))) +
+    ggplot2::ggplot(data, ggplot2::aes(get(cat_var))) +
+      ggplot2::geom_bar(ggplot2::aes(y = ggplot2::after_stat(count), fill = get(cat_var))) +
       ggplot2::geom_text(
         ggplot2::aes(
-          label = paste0(after_stat(count), " (", scales::percent(after_stat(prop), accuracy = 0.1), ")"),
+          label = paste0(ggplot2::after_stat(count), " (", scales::percent(ggplot2::after_stat(prop), accuracy = 0.1), ")"),
           group = 1
           ),
         stat = "count",
@@ -46,6 +46,7 @@ make_barplot1 <- function(data, cat_var, label_fmt = TRUE) {
       ggplot2::labs(x = xlab, title = plot_title)
   }
 }
+
 
 
 #' @title Horizontal Barplot for Categorical Var
@@ -77,13 +78,13 @@ make_hbarplot <- function(data, cat_var, label_fmt = TRUE) {
   data <- data %>%
     dplyr::mutate(!!as.symbol(cat_var) := factor(!!as.symbol(cat_var), levels = levels))
 
-  font_size <- dplyr::if_else(length(levels) > 20, 3, 5)
+  font_size <- dplyr::if_else(length(levels) > 20, 2.5, 3.5)
 
-  ggplot2::ggplot(data, ggplot2::aes(get(cat_var), fill = get(cat_var))) +
-    ggplot2::geom_bar(ggplot2::aes(y = after_stat(count))) +
+  ggplot2::ggplot(data, ggplot2::aes(get(cat_var))) +
+    ggplot2::geom_bar(ggplot2::aes(y = ggplot2::after_stat(count), fill = get(cat_var))) +
     ggplot2::geom_text(
       ggplot2::aes(
-        label = paste0(after_stat(count), " (", scales::percent(after_stat(prop), accuracy = 0.1), ")"),
+        label = paste0(ggplot2::after_stat(count), " (", scales::percent(ggplot2::after_stat(prop), accuracy = 0.1), ")"),
         group = 1
       ),
       stat = "count",
@@ -96,6 +97,7 @@ make_hbarplot <- function(data, cat_var, label_fmt = TRUE) {
     ggplot2::labs(x = xlab, title = plot_title) +
     ggplot2::coord_flip()
 }
+
 
 
 #' @title Barplot for Categorical by Categorical
@@ -125,11 +127,11 @@ make_barplot2 <- function(data, cat_var, grp_var) {
       lapply(stringr::str_to_title)
     plot_title <- paste0("Distribution of ", vars[[1]], " by ", vars[[2]], " Categories")
 
-    ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var), fill = get(cat_var))) +
-      ggplot2::geom_bar(ggplot2::aes(y = after_stat(count)), position = "dodge") +
+    ggplot2::ggplot(data, ggplot2::aes(x = get(cat_var))) +
+      ggplot2::geom_bar(ggplot2::aes(y = ggplot2::after_stat(count)), fill = get(cat_var), position = "dodge") +
       ggplot2::geom_text(
         ggplot2::aes(
-          label = paste0(after_stat(count), " (", scales::percent(after_stat(prop), accuracy = 0.1), ")"),
+          label = paste0(ggplot2::after_stat(count), " (", scales::percent(ggplot2::after_stat(prop), accuracy = 0.1), ")"),
           group = 1
           ),
         size = font_size,

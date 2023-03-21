@@ -2,7 +2,7 @@
 % Please edit documentation in R/connect_awss3.R
 \name{load_s3_files}
 \alias{load_s3_files}
-\title{Load files from a aws s3 path}
+\title{Load files from an aws s3 path}
 \usage{
 load_s3_files(s3_path = "s3://my_bucket/directory/", file_format = "csv")
 }
@@ -15,5 +15,5 @@ load_s3_files(s3_path = "s3://my_bucket/directory/", file_format = "csv")
 a list of dataframes
 }
 \description{
-Load csv, tsv, or xlsx files stored in a aws s3 path
+Load csv, tsv, or xlsx files stored in an aws s3 path
 }

@@ -21,6 +21,7 @@ print_chisq <- function(test) {
 }
 
 
+
 #' @title Student's T-test Result
 #' @description Tidy the printout of a student's t-test in a R markdown.
 #'

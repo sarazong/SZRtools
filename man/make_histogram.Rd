@@ -2,9 +2,9 @@
 % Please edit documentation in R/see_num_vars.R
 \name{make_histogram}
 \alias{make_histogram}
-\title{Histogram for Numeric Var}
+\title{Histogram for Numeric Variable}
 \usage{
-make_histogram(data, num_var, bins = 30)
+make_histogram(data, num_var, bins = 30, title = "")
 }
 \arguments{
 \item{data}{dataset that contains the variables}
@@ -12,6 +12,8 @@ make_histogram(data, num_var, bins = 30)
 \item{num_var}{name of the numeric variable as a string}
 
 \item{bins}{number of bins, default to 30}
+
+\item{title}{title of the plot}
 }
 \value{
 none

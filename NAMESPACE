@@ -3,6 +3,8 @@
 export("%>%")
 export(count_cats)
 export(count_obs)
+export(create_canvas)
+export(create_ribbon)
 export(label_plot)
 export(load_s3_files)
 export(make_barplot1)

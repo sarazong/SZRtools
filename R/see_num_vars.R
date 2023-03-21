@@ -1,16 +1,17 @@
-#' @title Histogram for Numeric Var
+#' @title Histogram for Numeric Variable
 #' @description Create a histogram to display the distribution of a numeric variable.
 #'
 #' @param data dataset that contains the variables
 #' @param num_var name of the numeric variable as a string
 #' @param bins number of bins, default to 30
+#' @param title title of the plot
 #'
 #' @return none
 #' @examples
 #' make_histogram(ggplot2::diamonds, "price")
 #' @export
 
-make_histogram <- function(data, num_var, bins = 30) {
+make_histogram <- function(data, num_var, bins = 30, title = "") {
   xlab <- stringr::str_to_title(stringr::str_replace(num_var, "[:punct:]", " "))
 
   ggplot2::ggplot(data, ggplot2::aes(x = get(num_var))) +
@@ -20,9 +21,9 @@ make_histogram <- function(data, num_var, bins = 30) {
                             fill = "grey") +
     ggplot2::geom_density(fill = "red", alpha = 0.2) +
     ggplot2::theme_classic() +
-    ggplot2::labs(x = xlab,
-                  title = paste0("Distribution of ", xlab))
+    ggplot2::labs(x = xlab, title = title)
 }
+
 
 
 #' @title Boxplot for Numeric Grouped by Categorical
@@ -54,6 +55,7 @@ make_boxplot1 <- function(data, num_var, cat_var, plot_title, vjust = 1.5) {
                         "6" = 3.1, "7" = 2.8, "8" = 2.5, "9" = 2.1, "10" = 2)
     # "[:punct:]" are punctuation characters
     ylab <- stringr::str_to_title(stringr::str_replace(num_var, "[:punct:]", " "))
+    xlab <- stringr::str_to_title(stringr::str_replace(cat_var, "[:punct:]", " "))
 
     obs <- szrtools::count_obs(data, c(cat_var), max)
 
@@ -67,14 +69,15 @@ make_boxplot1 <- function(data, num_var, cat_var, plot_title, vjust = 1.5) {
       p <- p + ggplot2::geom_boxplot()
     }
 
-    p + ggplot2::stat_summary(ggplot2::aes(label = ..y..), fun = "median",
+    p + ggplot2::stat_summary(ggplot2::aes(label = ggplot2::after_stat(y)), fun = "median",
                               geom = "text", size = font_size,
                               color = "black", vjust = vjust) +
       ggplot2::theme_classic() +
       ggplot2::theme(legend.position = "none") +
-      ggplot2::labs(x = "", y = ylab, title = plot_title)
+      ggplot2::labs(x = xlab, y = ylab, title = plot_title)
   }
 }
+
 
 
 #' @title Boxplot for Numeric Grouped by Two Categoricals
@@ -147,6 +150,7 @@ make_boxplot2 <- function(data, num_var, cat_var, grp_var, label_fmt = TRUE) {
 }
 
 
+
 #' @title Scatter Plot for Numeric Vars
 #' @description Create a scatter plot to examine relationship between two numeric
 #' variables.
@@ -180,6 +184,7 @@ make_scatter_plot1 <- function(data, num_var1, num_var2,
     ggplot2::labs(x = labs[[1]][[1]], y = labs[[1]][[2]],
                   title = labs[[2]][[1]])
 }
+
 
 
 #' @title Scatter Plot for Numeric Grouped by Categorical
